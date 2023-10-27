@@ -101,11 +101,7 @@ exports.forgotPassword = BigPromise(async (req, res, next) => {
 exports.passwordReset = BigPromise(async (req, res, next) => {
     const token = req.params.token;
 
-    console.log("token", token)
-
     const encryToken = crypto.createHash('sha256').update(token).digest('hex')
-    console.log("encryToken", encryToken)
-
 
     const user = await User.findOne({
         forgotPasswordToken: encryToken,
