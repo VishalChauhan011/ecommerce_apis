@@ -7,7 +7,8 @@ const cookieToken = (user, res) => {
         expires: new Date(
             Date.now() + process.env.COOKIE_TIME * 24 * 60 * 60 * 1000
         ),
-        httpOnly: true
+        // insecure cookies
+        httpOnly: true,
     }
 
     user.password = undefined; // remove password from response

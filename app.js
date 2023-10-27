@@ -8,6 +8,14 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cookieparser = require('cookie-parser');
 const fileUpload = require('express-fileupload');
+const cors = require('cors');
+
+// var corsOptions = {
+//     origin: 'http://localhost:3000',
+//     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+//   }
+
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 
 const routes = require('./routes/index.js');
 
