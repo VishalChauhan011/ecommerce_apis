@@ -36,3 +36,23 @@ exports.placeOrder = BigPromise(async (req, res, next) => {
         message: "Order placed successfully",
     })
 })
+
+exports.getAllOrdersAdmin = BigPromise(async (req, res, next) => {
+    const orders = await Order.find()
+
+    res.status(200).json({
+        success: true,
+        message: "All orders",
+        orders
+    })
+})
+
+exports.getAllOrdersByUserId = BigPromise(async (req, res, next) => {
+    const orders = await Order.find({user: req.user})
+
+    res.status(200).json({
+        success: true,
+        message: "All orders",
+        orders
+    })
+})
