@@ -27,7 +27,9 @@ exports.createReward = BigPromise(async (req, res, next) => {
 })
 
 exports.getAllReward = BigPromise(async (req, res, next) => {
-    const rewards = await Reward.find({});
+    const type = req.body.type;
+
+    const rewards = await Reward.find({type: type})
 
     res.status(200).json({
         success: true,
