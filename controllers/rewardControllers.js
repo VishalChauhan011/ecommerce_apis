@@ -1,6 +1,9 @@
 const Reward = require('../models/reward')
+const ClaimedRewards = require('../models/claimedReward')
+const User = require('../models/user')
 const BigPromise = require('../middleware/bigPromise')
 const CustomError = require('../utils/customError')
+const { v4: uuidv4 } = require("uuid");
 
 exports.createReward = BigPromise(async (req, res, next) => {
     const {name, coins, photo, type, details } = req.body;
@@ -36,4 +39,47 @@ exports.getAllReward = BigPromise(async (req, res, next) => {
         message: "All rewards",
         rewards
     })
+})
+
+exports.claimReward = BigPromise( async (req, res, next) => {
+    const coins = req.user.coins;
+    const rewardId = req.body.reward;
+
+    if(!rewardId) {
+        return next(new CustomError("Please enter rewardId", 400));
+    }
+
+    const claimId = uuidv4();
+    const reward = await Reward.findById(rewardId);
+
+    if(!reward) {
+        return next(new CustomError("Reward not found", 404));
+    }
+
+    if(coins < reward.coins) {
+        return next(new CustomError("You don't have enough coins", 400));
+    }
+
+    //update users coins
+    const newData = {
+        coins: coins - reward.coins
+    }
+    
+    const user = await User.findOneAndUpdate({_id: req.user._id}, newData, {
+        new: true
+    })
+
+    const claimedReward = await ClaimedRewards.create({
+        id: claimId,
+        user: req.user._id,
+        totalCoins: reward.coins,
+        reward: rewardId
+    })
+
+    res.status(200).json({
+        success: true,
+        message: "Reward claimed successfully",
+        claimedReward
+    })
+
 })

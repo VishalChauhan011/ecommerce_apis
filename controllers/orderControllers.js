@@ -31,7 +31,7 @@ exports.placeOrder = BigPromise(async (req, res, next) => {
 
     try {
       await mailHelper({
-        email: "deepakkohli2016@gmail.com",
+        email: email,
         subject: "Order Placed Successfully",
         message,
       })
