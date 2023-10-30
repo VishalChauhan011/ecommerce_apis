@@ -28,6 +28,10 @@ const userSchema = new mongoose.Schema({
         default: "user"
         // required: [true, "Please provide a role"],
     },
+    coins: {
+      type: Number,
+        default: 0  
+    },
     forgotPasswordToken: String,
     forgotPasswordExpiry: {
         type: Date
