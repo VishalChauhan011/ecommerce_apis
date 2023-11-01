@@ -66,14 +66,13 @@ exports.claimReward = BigPromise(async (req, res, next) => {
     const coins = req.user.coins;
     const rewardId = req.body.reward;
 
-    const isAlreadyClaimed = await ClaimedRewards.findOne({ user: req.user._id, reward: rewardId })
-
-    if (isAlreadyClaimed) {
-        return next(new CustomError("You have already claimed this reward", 400));
-    }
-
     if (!rewardId) {
         return next(new CustomError("Please enter rewardId", 400));
+    }
+
+    const isAlreadyClaimed = await ClaimedRewards.findOne({ user: req.user._id, reward: rewardId })
+    if (isAlreadyClaimed) {
+        return next(new CustomError("You have already claimed this reward", 400));
     }
 
     const claimId = uuidv4();
