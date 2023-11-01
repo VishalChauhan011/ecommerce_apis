@@ -5,6 +5,7 @@ const validator = require('validator');
 const rewardSchema = new mongoose.Schema({
     name: {
         type: String,
+        unique: [true, "Reward name already exists"],
         required: [true, "Please provide reward name"],
         maxLength: [40, "Your reward name cannot exceed 40 characters"]
     },
