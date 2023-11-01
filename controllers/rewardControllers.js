@@ -83,3 +83,13 @@ exports.claimReward = BigPromise( async (req, res, next) => {
     })
 
 })
+
+exports.getClaimedRewardsByUserId = BigPromise(async (req, res, next) => {
+    const claimedRewards = await ClaimedRewards.find({user: req.user._id}).populate('reward')
+
+    res.status(200).json({
+        success: true,
+        message: "All claimed rewards",
+        claimedRewards
+    })
+})
